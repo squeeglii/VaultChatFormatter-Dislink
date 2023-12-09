@@ -183,7 +183,7 @@ public class ChatFormatterPlugin extends JavaPlugin implements Listener {
             return unmodifiedFormat;
 
         return replaceAll(
-                DISLINK_VERIFIER_PLACEHOLDER_PATTERN, unmodifiedFormat,
+                DISLINK_VERIFIER_PLACEHOLDER_PATTERN, format,
                 () -> colorize(verifierPrefix) + " "
         );
     }
