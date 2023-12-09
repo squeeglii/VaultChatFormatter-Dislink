@@ -158,9 +158,7 @@ public class ChatFormatterPlugin extends JavaPlugin implements Listener {
             format = replaceAll(SUFFIX_PLACEHOLDER_PATTERN, format, () -> colorize(this.vaultChat.getPlayerSuffix(e.getPlayer())));
         }
 
-        processDislinkFormatting(format, e.getPlayer().getUniqueId());
-
-
+        format = this.processDislinkFormatting(format, e.getPlayer().getUniqueId());
 
         format = replaceAll(NAME_PLACEHOLDER_PATTERN, format, () -> e.getPlayer().getName());
 
@@ -168,23 +166,24 @@ public class ChatFormatterPlugin extends JavaPlugin implements Listener {
     }
 
     private String processDislinkFormatting(String format, UUID playerId) {
-        if(this.verifierPrefixes == null) return format;
-        if(this.linkedAccountCache == null) return format;
+        String unmodifiedFormat = replaceAll(DISLINK_VERIFIER_PLACEHOLDER_PATTERN, format, () -> "");
+        if(this.verifierPrefixes == null) return unmodifiedFormat;
+        if(this.linkedAccountCache == null) return unmodifiedFormat;
 
         Optional<LinkedAccount> optLink = this.linkedAccountCache.getAccount(playerId);
 
         if(optLink.isEmpty())
-            return format;
+            return unmodifiedFormat;
 
         LinkedAccount account = optLink.get();
         String verifier = account.verifier();
         String verifierPrefix = this.verifierPrefixes.getPrefixForVerifier(verifier).orElse("");
 
         if(verifierPrefix.isEmpty())
-            return format;
+            return unmodifiedFormat;
 
         return replaceAll(
-                DISLINK_VERIFIER_PLACEHOLDER_PATTERN, format,
+                DISLINK_VERIFIER_PLACEHOLDER_PATTERN, unmodifiedFormat,
                 () -> colorize(verifierPrefix) + " "
         );
     }
