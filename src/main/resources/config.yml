@@ -13,6 +13,7 @@
 # {name} ==> the players name
 # {displayname} ==> the players displayname
 # {message} ==> the message being sent by the player
+# {dislink_verifier} ==> an account's verifying server's defined prefix
 #
 # Standard Minecraft color codes can be used in the format.
 format: "<{prefix}{name}{suffix}> {message}"
